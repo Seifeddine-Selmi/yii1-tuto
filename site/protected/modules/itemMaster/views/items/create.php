@@ -15,6 +15,9 @@ $this->menu=array(
 
 <h1>Create Items</h1>
 
+<?php echo CHtml::link('Create Brands',array('brands/create'), array('target'=>'_blank')); ?>
+<br><br>
+
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>
 
 
