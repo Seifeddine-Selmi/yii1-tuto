@@ -21,6 +21,7 @@ $this->menu=array(
 
 	<?php $this->widget('zii.widgets.grid.CGridView', array(
 		'id'=>'users-grid',
+		//'itemsCssClass' => 'table table-striped table-hover',
 		'htmlOptions' => array('style'=>'width:100%'),
 		'dataProvider'=>$model->search(),
 		'filter'=>$model,
