@@ -15,6 +15,7 @@ class UserIdentity extends CUserIdentity
 	 * against some persistent user identity storage (e.g. database).
 	 * @return boolean whether authentication succeeds.
 	 */
+/*
 	public function authenticate()
 	{
 		$users=array(
@@ -29,5 +30,18 @@ class UserIdentity extends CUserIdentity
 		else
 			$this->errorCode=self::ERROR_NONE;
 		return !$this->errorCode;
+	}*/
+
+	public function authenticate()
+	{
+		$record=Users::model()->findByAttributes(array('username'=>$this->username));
+		if(!isset($record))
+			$this->errorCode=self::ERROR_USERNAME_INVALID;
+		elseif($record->password !==$this->password)
+			$this->errorCode=self::ERROR_PASSWORD_INVALID;
+		else
+			$this->errorCode=self::ERROR_NONE;
+		return !$this->errorCode;
 	}
+
 }
