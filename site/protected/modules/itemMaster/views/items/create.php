@@ -27,6 +27,7 @@ $this->menu=array(
 		'name',
 		'cost',
 		'selling',
+		array( 'name'=>'brand_id', 'value'=>'$data->brand->name' ),
 		array(
 			'class'=>'CButtonColumn',
 			'htmlOptions' => array('style'=>'width:80px')
