@@ -73,8 +73,10 @@ class UsersController extends Controller
 
 			$password = $_POST['Users']['password'];
 			$model->password = md5($password);
+
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				//$this->redirect(array('view','id'=>$model->id));
+			    $this->redirect(array('create'));
 		}
 
 		$this->render('create',array(
