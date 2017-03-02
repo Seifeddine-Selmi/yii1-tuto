@@ -87,12 +87,16 @@ class Items extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
+		$criteria->with = array('brand');
+
 		$criteria->compare('id',$this->id);
 		$criteria->compare('name',$this->name,true);
 		$criteria->compare('cost',$this->cost,true);
 		$criteria->compare('selling',$this->selling,true);
 		$criteria->compare('created_date',$this->created_date,true);
-		$criteria->compare('brand_id',$this->brand_id);
+	//	$criteria->compare('brand_id',$this->brand_id);
+
+		$criteria->compare('brand.brand_name',$this->brand_id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

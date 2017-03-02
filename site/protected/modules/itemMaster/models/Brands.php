@@ -5,7 +5,10 @@
  *
  * The followings are the available columns in table 'brands':
  * @property integer $id
- * @property string $name
+ * @property string $brand_name
+ *
+ * The followings are the available model relations:
+ * @property Items[] $items
  */
 class Brands extends CActiveRecord
 {
@@ -25,11 +28,11 @@ class Brands extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name', 'required'),
-			array('name', 'length', 'max'=>100),
+			array('brand_name', 'required'),
+			array('brand_name', 'length', 'max'=>100),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name', 'safe', 'on'=>'search'),
+			array('id, brand_name', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -41,6 +44,7 @@ class Brands extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'items' => array(self::HAS_MANY, 'Items', 'brand_id'),
 		);
 	}
 
@@ -51,7 +55,7 @@ class Brands extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'name' => 'Name',
+			'brand_name' => 'Brand Name',
 		);
 	}
 
@@ -74,7 +78,7 @@ class Brands extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('name',$this->name,true);
+		$criteria->compare('brand_name',$this->brand_name,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

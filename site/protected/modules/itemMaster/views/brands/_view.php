@@ -9,7 +9,7 @@
 	<?php echo CHtml::link(CHtml::encode($data->id), array('view', 'id'=>$data->id)); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('name')); ?>:</b>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('brand_name')); ?>:</b>
 	<?php echo CHtml::encode($data->name); ?>
 	<br />
 

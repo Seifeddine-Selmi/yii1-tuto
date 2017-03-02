@@ -23,7 +23,7 @@
 		<?php echo $form->labelEx($model,'brand_id'); ?>
 		<?php
 			$brands = Brands::model()->findAll();
-			$list = CHtml::listData($brands, 'id', 'name');
+			$list = CHtml::listData($brands, 'id', 'brand_name');
 		?>
 		<?php echo $form->dropDownList($model,'brand_id',$list); ?>
 		<?php echo $form->error($model,'brand_id'); ?>

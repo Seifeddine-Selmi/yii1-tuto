@@ -49,7 +49,8 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 		'name',
 		'cost',
 		'selling',
-		array( 'name'=>'brand_id', 'value'=>'$data->brand->name' ),
+		//'brand.brand_name',
+		array( 'name'=>'brand_id', 'value'=>'$data->brand->brand_name' ),
 		array(
 			'class'=>'CButtonColumn',
 			'htmlOptions' => array('style'=>'width:80px')

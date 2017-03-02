@@ -4,7 +4,7 @@
 
 $this->breadcrumbs=array(
 	'Brands'=>array('index'),
-	$model->name,
+	$model->brand_name,
 );
 
 $this->menu=array(
@@ -22,6 +22,6 @@ $this->menu=array(
 	'data'=>$model,
 	'attributes'=>array(
 		'id',
-		'name',
+		'brand_name',
 	),
 )); ?>
