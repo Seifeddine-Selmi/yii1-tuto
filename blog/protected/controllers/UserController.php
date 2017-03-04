@@ -37,7 +37,7 @@ class UserController extends Controller
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('admin','delete'),
-				'users'=>array('admin'),
+				'users'=>array('admin', 'demo'),
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
@@ -70,6 +70,12 @@ class UserController extends Controller
 		if(isset($_POST['User']))
 		{
 			$model->attributes=$_POST['User'];
+
+			$password = $_POST['User']['password'];
+			$model->password = $this->hashPassword($password);
+			//$model->password = md5($password);
+
+
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -94,6 +100,12 @@ class UserController extends Controller
 		if(isset($_POST['User']))
 		{
 			$model->attributes=$_POST['User'];
+
+			$password = $_POST['User']['password'];
+			$model->password = $this->hashPassword($password);
+			//$model->password = md5($password);
+
+
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -169,5 +181,15 @@ class UserController extends Controller
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
+	}
+
+	/**
+	 * Generates the password hash.
+	 * @param string password
+	 * @return string hash
+	 */
+	public function hashPassword($password)
+	{
+		return CPasswordHelper::hashPassword($password);
 	}
 }
