@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This is the model class for table "Post".
+ * This is the model class for table "post".
  *
- * The followings are the available columns in table 'Post':
+ * The followings are the available columns in table 'post':
  * @property integer $id
  * @property string $title
  * @property string $content
@@ -12,6 +12,10 @@
  * @property integer $create_time
  * @property integer $update_time
  * @property integer $author_id
+ *
+ * The followings are the available model relations:
+ * @property Comment[] $comments
+ * @property User $author
  */
 class Post extends CActiveRecord
 {
@@ -20,7 +24,7 @@ class Post extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'Post';
+		return 'post';
 	}
 
 	/**
@@ -36,7 +40,7 @@ class Post extends CActiveRecord
 			array('title', 'length', 'max'=>128),
 			array('tags', 'safe'),
 			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
+			// @todo Please remove those attributes that should not be searched.
 			array('id, title, content, tags, status, create_time, update_time, author_id', 'safe', 'on'=>'search'),
 		);
 	}
@@ -60,7 +64,7 @@ class Post extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'Id',
+			'id' => 'ID',
 			'title' => 'Title',
 			'content' => 'Content',
 			'tags' => 'Tags',
@@ -80,38 +84,33 @@ class Post extends CActiveRecord
 	 * models according to data in model fields.
 	 * - Pass data provider to CGridView, CListView or any similar widget.
 	 *
-	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+	 * @return CActiveDataProvider the data provider that can return the models
+	 * based on the search/filter conditions.
 	 */
 	public function search()
 	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
+		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-
 		$criteria->compare('title',$this->title,true);
-
 		$criteria->compare('content',$this->content,true);
-
 		$criteria->compare('tags',$this->tags,true);
-
 		$criteria->compare('status',$this->status);
-
 		$criteria->compare('create_time',$this->create_time);
-
 		$criteria->compare('update_time',$this->update_time);
-
 		$criteria->compare('author_id',$this->author_id);
 
-		return new CActiveDataProvider('Post', array(
+		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}
 
 	/**
 	 * Returns the static model of the specified AR class.
+	 * Please note that you should have this exact method in all your CActiveRecord descendants!
+	 * @param string $className active record class name.
 	 * @return Post the static model class
 	 */
 	public static function model($className=__CLASS__)

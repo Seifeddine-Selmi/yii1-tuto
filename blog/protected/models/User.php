@@ -1,14 +1,17 @@
 <?php
 
 /**
- * This is the model class for table "User".
+ * This is the model class for table "user".
  *
- * The followings are the available columns in table 'User':
+ * The followings are the available columns in table 'user':
  * @property integer $id
  * @property string $username
  * @property string $password
  * @property string $email
  * @property string $profile
+ *
+ * The followings are the available model relations:
+ * @property Post[] $posts
  */
 class User extends CActiveRecord
 {
@@ -17,7 +20,7 @@ class User extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'User';
+		return 'user';
 	}
 
 	/**
@@ -32,7 +35,7 @@ class User extends CActiveRecord
 			array('username, password, email', 'length', 'max'=>128),
 			array('profile', 'safe'),
 			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
+			// @todo Please remove those attributes that should not be searched.
 			array('id, username, password, email, profile', 'safe', 'on'=>'search'),
 		);
 	}
@@ -55,7 +58,7 @@ class User extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'Id',
+			'id' => 'ID',
 			'username' => 'Username',
 			'password' => 'Password',
 			'email' => 'Email',
@@ -72,36 +75,54 @@ class User extends CActiveRecord
 	 * models according to data in model fields.
 	 * - Pass data provider to CGridView, CListView or any similar widget.
 	 *
-	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+	 * @return CActiveDataProvider the data provider that can return the models
+	 * based on the search/filter conditions.
 	 */
 	public function search()
 	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
+		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-
 		$criteria->compare('username',$this->username,true);
-
 		$criteria->compare('password',$this->password,true);
-
 		$criteria->compare('email',$this->email,true);
-
 		$criteria->compare('profile',$this->profile,true);
 
-		return new CActiveDataProvider('User', array(
+		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}
 
 	/**
 	 * Returns the static model of the specified AR class.
+	 * Please note that you should have this exact method in all your CActiveRecord descendants!
+	 * @param string $className active record class name.
 	 * @return User the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
+	}
+
+	/**
+	 * Checks if the given password is correct.
+	 * @param string the password to be validated
+	 * @return boolean whether the password is valid
+	 */
+	public function validatePassword($password)
+	{
+		return CPasswordHelper::verifyPassword($password,$this->password);
+	}
+
+	/**
+	 * Generates the password hash.
+	 * @param string password
+	 * @return string hash
+	 */
+	public function hashPassword($password)
+	{
+		return CPasswordHelper::hashPassword($password);
 	}
 }

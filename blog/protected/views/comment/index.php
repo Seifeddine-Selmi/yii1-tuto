@@ -1,4 +1,7 @@
 <?php
+/* @var $this CommentController */
+/* @var $dataProvider CActiveDataProvider */
+
 $this->breadcrumbs=array(
 	'Comments',
 );

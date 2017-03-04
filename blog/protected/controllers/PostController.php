@@ -2,16 +2,13 @@
 
 class PostController extends Controller
 {
+
+	const PAGE_SIZE = 2;
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
 	public $layout='//layouts/column2';
-
-	/**
-	 * @var CActiveRecord the currently loaded data model instance.
-	 */
-	private $_model;
 
 	/**
 	 * @return array action filters
@@ -20,6 +17,7 @@ class PostController extends Controller
 	{
 		return array(
 			'accessControl', // perform access control for CRUD operations
+			'postOnly + delete', // we only allow deletion via POST request
 		);
 	}
 
@@ -51,11 +49,12 @@ class PostController extends Controller
 
 	/**
 	 * Displays a particular model.
+	 * @param integer $id the ID of the model to be displayed
 	 */
-	public function actionView()
+	public function actionView($id)
 	{
 		$this->render('view',array(
-			'model'=>$this->loadModel(),
+			'model'=>$this->loadModel($id),
 		));
 	}
 
@@ -85,10 +84,11 @@ class PostController extends Controller
 	/**
 	 * Updates a particular model.
 	 * If update is successful, the browser will be redirected to the 'view' page.
+	 * @param integer $id the ID of the model to be updated
 	 */
-	public function actionUpdate()
+	public function actionUpdate($id)
 	{
-		$model=$this->loadModel();
+		$model=$this->loadModel($id);
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -107,21 +107,16 @@ class PostController extends Controller
 
 	/**
 	 * Deletes a particular model.
-	 * If deletion is successful, the browser will be redirected to the 'index' page.
+	 * If deletion is successful, the browser will be redirected to the 'admin' page.
+	 * @param integer $id the ID of the model to be deleted
 	 */
-	public function actionDelete()
+	public function actionDelete($id)
 	{
-		if(Yii::app()->request->isPostRequest)
-		{
-			// we only allow deletion via POST request
-			$this->loadModel()->delete();
+		$this->loadModel($id)->delete();
 
-			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			if(!isset($_GET['ajax']))
-				$this->redirect(array('index'));
-		}
-		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+		if(!isset($_GET['ajax']))
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 	}
 
 	/**
@@ -129,9 +124,34 @@ class PostController extends Controller
 	 */
 	public function actionIndex()
 	{
+		/*
 		$dataProvider=new CActiveDataProvider('Post');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
+		));*/
+
+		$criteria=new CDbCriteria(array(
+			//'condition'=>'status='.Post::STATUS_PUBLISHED,
+			'order'=>'update_time DESC',
+			'limit'=>self::PAGE_SIZE,
+			'offset'=> 1,
+			//'with'=>'commentCount',
+		));
+		if(isset($_GET['tag']))
+			$criteria->addSearchCondition('tags',$_GET['tag']);
+
+		$dataProvider=new CActiveDataProvider('Post',
+			array(
+				'pagination'=>array(
+					'pageSize'=>self::PAGE_SIZE,
+				),
+				'criteria'=>$criteria,
+			));
+
+
+		$this->render('index',array(
+			'dataProvider'=>$dataProvider,
+
 		));
 	}
 
@@ -153,22 +173,21 @@ class PostController extends Controller
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
+	 * @param integer $id the ID of the model to be loaded
+	 * @return Post the loaded model
+	 * @throws CHttpException
 	 */
-	public function loadModel()
+	public function loadModel($id)
 	{
-		if($this->_model===null)
-		{
-			if(isset($_GET['id']))
-				$this->_model=Post::model()->findbyPk($_GET['id']);
-			if($this->_model===null)
-				throw new CHttpException(404,'The requested page does not exist.');
-		}
-		return $this->_model;
+		$model=Post::model()->findByPk($id);
+		if($model===null)
+			throw new CHttpException(404,'The requested page does not exist.');
+		return $model;
 	}
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param CModel the model to be validated
+	 * @param Post $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{

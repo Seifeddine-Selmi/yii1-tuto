@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This is the model class for table "Comment".
+ * This is the model class for table "comment".
  *
- * The followings are the available columns in table 'Comment':
+ * The followings are the available columns in table 'comment':
  * @property integer $id
  * @property string $content
  * @property integer $status
@@ -12,6 +12,9 @@
  * @property string $email
  * @property string $url
  * @property integer $post_id
+ *
+ * The followings are the available model relations:
+ * @property Post $post
  */
 class Comment extends CActiveRecord
 {
@@ -20,7 +23,7 @@ class Comment extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'Comment';
+		return 'comment';
 	}
 
 	/**
@@ -35,7 +38,7 @@ class Comment extends CActiveRecord
 			array('status, create_time, post_id', 'numerical', 'integerOnly'=>true),
 			array('author, email, url', 'length', 'max'=>128),
 			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
+			// @todo Please remove those attributes that should not be searched.
 			array('id, content, status, create_time, author, email, url, post_id', 'safe', 'on'=>'search'),
 		);
 	}
@@ -58,7 +61,7 @@ class Comment extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'Id',
+			'id' => 'ID',
 			'content' => 'Content',
 			'status' => 'Status',
 			'create_time' => 'Create Time',
@@ -78,38 +81,33 @@ class Comment extends CActiveRecord
 	 * models according to data in model fields.
 	 * - Pass data provider to CGridView, CListView or any similar widget.
 	 *
-	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+	 * @return CActiveDataProvider the data provider that can return the models
+	 * based on the search/filter conditions.
 	 */
 	public function search()
 	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
+		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-
 		$criteria->compare('content',$this->content,true);
-
 		$criteria->compare('status',$this->status);
-
 		$criteria->compare('create_time',$this->create_time);
-
 		$criteria->compare('author',$this->author,true);
-
 		$criteria->compare('email',$this->email,true);
-
 		$criteria->compare('url',$this->url,true);
-
 		$criteria->compare('post_id',$this->post_id);
 
-		return new CActiveDataProvider('Comment', array(
+		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}
 
 	/**
 	 * Returns the static model of the specified AR class.
+	 * Please note that you should have this exact method in all your CActiveRecord descendants!
+	 * @param string $className active record class name.
 	 * @return Comment the static model class
 	 */
 	public static function model($className=__CLASS__)

@@ -1,3 +1,8 @@
+<?php
+/* @var $this CommentController */
+/* @var $data Comment */
+?>
+
 <div class="view">
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('id')); ?>:</b>
