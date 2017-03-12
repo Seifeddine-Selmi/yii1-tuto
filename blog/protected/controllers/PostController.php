@@ -11,6 +11,11 @@ class PostController extends Controller
 	public $layout='//layouts/column2';
 
 	/**
+	 * @var CActiveRecord the currently loaded data model instance.
+	 */
+	private $_model;
+
+	/**
 	 * @return array action filters
 	 */
 	public function filters()
@@ -55,10 +60,18 @@ class PostController extends Controller
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
-	public function actionView($id)
+	/*public function actionView($id)
 	{
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
+		));
+	}*/
+
+	public function actionView()
+	{
+		$post=$this->loadModel();
+		$this->render('view',array(
+			'model'=>$post,
 		));
 	}
 
@@ -135,28 +148,26 @@ class PostController extends Controller
 		));*/
 
 		$criteria=new CDbCriteria(array(
-			//'condition'=>'status='.Post::STATUS_PUBLISHED,
+			'condition'=>'status='.Post::STATUS_PUBLISHED,
 			'order'=>'update_time DESC',
+			'with'=>'commentCount',
 			'limit'=>self::PAGE_SIZE,
 			'offset'=> 1,
-			//'with'=>'commentCount',
 		));
 		if(isset($_GET['tag']))
 			$criteria->addSearchCondition('tags',$_GET['tag']);
 
-		$dataProvider=new CActiveDataProvider('Post',
-			array(
-				'pagination'=>array(
-					'pageSize'=>self::PAGE_SIZE,
-				),
-				'criteria'=>$criteria,
-			));
-
+		$dataProvider=new CActiveDataProvider('Post', array(
+			'pagination'=>array(
+				'pageSize'=>self::PAGE_SIZE,
+			),
+			'criteria'=>$criteria,
+		));
 
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
-
 		));
+
 	}
 
 	/**
@@ -181,12 +192,34 @@ class PostController extends Controller
 	 * @return Post the loaded model
 	 * @throws CHttpException
 	 */
-	public function loadModel($id)
+/*	public function loadModel($id)
 	{
 		$model=Post::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
+	}*/
+
+	/**
+	 * Returns the data model based on the primary key given in the GET variable.
+	 * If the data model is not found, an HTTP exception will be raised.
+	 */
+	public function loadModel()
+	{
+		if($this->_model===null)
+		{
+			if(isset($_GET['id']))
+			{
+				if(Yii::app()->user->isGuest)
+					$condition='status='.Post::STATUS_PUBLISHED.' OR status='.Post::STATUS_ARCHIVED;
+				else
+					$condition='';
+				$this->_model=Post::model()->findByPk($_GET['id'], $condition);
+			}
+			if($this->_model===null)
+				throw new CHttpException(404,'The requested page does not exist.');
+		}
+		return $this->_model;
 	}
 
 	/**
