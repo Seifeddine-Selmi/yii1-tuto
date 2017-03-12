@@ -151,4 +151,26 @@ class Post extends CActiveRecord
 			'title'=>$this->title,
 		));
 	}
+
+
+	/**
+	 * This is invoked before the record is saved.
+	 * @return boolean whether the record should be saved.
+	 */
+	protected function beforeSave()
+	{
+		if(parent::beforeSave())
+		{
+			if($this->isNewRecord)
+			{
+				$this->create_time=$this->update_time=time();
+				$this->author_id=Yii::app()->user->id;
+			}
+			else
+				$this->update_time=time();
+			return true;
+		}
+		else
+			return false;
+	}
 }
