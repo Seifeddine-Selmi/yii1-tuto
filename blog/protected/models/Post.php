@@ -23,6 +23,8 @@ class Post extends CActiveRecord
 	const STATUS_PUBLISHED=2;
 	const STATUS_ARCHIVED=3;
 
+	private $_oldTags;
+
 	/**
 	 * @return string the associated database table name
 	 */
@@ -172,5 +174,23 @@ class Post extends CActiveRecord
 		}
 		else
 			return false;
+	}
+
+	/**
+	 * This is invoked when a record is populated with data from a find() call.
+	 */
+	protected function afterFind()
+	{
+		parent::afterFind();
+		$this->_oldTags=$this->tags;
+	}
+
+	/**
+	 * This is invoked after the record is saved.
+	 */
+	protected function afterSave()
+	{
+		parent::afterSave();
+		Tag::model()->updateFrequency($this->_oldTags, $this->tags);
 	}
 }

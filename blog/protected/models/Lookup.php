@@ -146,4 +146,22 @@ class Lookup extends CActiveRecord
 		foreach($models as $model)
 			self::$_items[$type][$model->code]=$model->name;
 	}
+
+
+	public static function getStatus($type)
+	{
+		$status = Lookup::model()->findAll(array(
+			'condition'=>'type=:type',
+			'params'=>array(':type'=>$type),
+			'order'=>'position',
+		));
+
+		$data = array(null=>'Select Status');
+
+		foreach($status as $stat){
+			$data[$stat->id] = $stat->name;
+		}
+
+		return $data;
+	}
 }
