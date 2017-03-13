@@ -159,7 +159,8 @@ class PostController extends Controller
 
 		$dataProvider=new CActiveDataProvider('Post', array(
 			'pagination'=>array(
-				'pageSize'=>self::PAGE_SIZE,
+				//'pageSize'=>self::PAGE_SIZE,
+				'pageSize'=>Yii::app()->params['postsPerPage'],
 			),
 			'criteria'=>$criteria,
 		));
