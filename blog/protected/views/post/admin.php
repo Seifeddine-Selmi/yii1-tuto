@@ -50,8 +50,11 @@ $('.search-form form').submit(function(){
 		'tags',
 		array(
 			'name'=>'status',
-			'value'=>'Lookup::item("PostStatus",$data->status)',
-			'filter'=>Lookup::items('PostStatus'),
+			//'value'=>'Lookup::item("PostStatus",$data->status)',
+			//'filter'=>Lookup::items('PostStatus'),
+
+			'value'=>'Lookup::getItem("PostStatus",$data->status)',
+			'filter'=>Lookup::getItems('PostStatus'),
 		),
 		array(
 			'name'=>'create_time',

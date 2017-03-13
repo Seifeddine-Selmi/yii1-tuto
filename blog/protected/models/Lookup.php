@@ -148,7 +148,18 @@ class Lookup extends CActiveRecord
 	}
 
 
-	public static function getStatus($type)
+	public static function getItem($type,$code)
+	{
+
+		$status = Lookup::model()->findByAttributes(
+			array('type'=>$type,'code'=>$code)
+
+		);
+
+		return $status->name;
+	}
+
+	public static function getItems($type)
 	{
 		$status = Lookup::model()->findAll(array(
 			'condition'=>'type=:type',
@@ -164,4 +175,5 @@ class Lookup extends CActiveRecord
 
 		return $data;
 	}
+
 }
