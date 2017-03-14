@@ -219,4 +219,15 @@ class Post extends CActiveRecord
 		$comment->post_id=$this->id;
 		return $comment->save();
 	}
+
+	/**
+	 * @return array a list of links that point to the post list filtered by every tag of this post
+	 */
+	public function getTagLinks()
+	{
+		$links=array();
+		foreach(Tag::string2array($this->tags) as $tag)
+			$links[]=CHtml::link(CHtml::encode($tag), array('post/index', 'tag'=>$tag));
+		return $links;
+	}
 }

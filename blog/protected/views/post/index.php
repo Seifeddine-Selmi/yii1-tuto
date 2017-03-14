@@ -2,12 +2,13 @@
 /* @var $this PostController */
 /* @var $dataProvider CActiveDataProvider */
 
-
-
+// Old Menu config in layouts column2.php
+/*
 $this->menu=array(
 	array('label'=>'Create Post', 'url'=>array('create')),
 	array('label'=>'Manage Post', 'url'=>array('admin')),
 );
+*/
 ?>
 
 <?php if(!empty($_GET['tag'])): ?>

@@ -15,6 +15,9 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/form.css">
 
+	<!-- Bootstrap CDN -->
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 </head>
 
@@ -32,9 +35,7 @@
 				array('label'=>'Home', 'url'=>array('post/index')),
 				array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about')),
 				array('label'=>'Contact', 'url'=>array('/site/contact')),
-				array('label'=>'Tags', 'url'=>array('/tag/index'), 'visible'=>!Yii::app()->user->isGuest),
-				array('label'=>'Users', 'url'=>array('/user/index'), 'visible'=>!Yii::app()->user->isGuest),
-				array('label'=>'Gii', 'url'=>array('/gii'), 'visible'=>!Yii::app()->user->isGuest, 'linkOptions'=>array('target'=>'_blank')),
+				//array('label'=>'Gii', 'url'=>array('/gii'), 'visible'=>!Yii::app()->user->isGuest, 'linkOptions'=>array('target'=>'_blank')),
 				array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
 				array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
 			),
@@ -53,7 +54,7 @@
 	<div id="footer">
 		Copyright &copy; <?php echo date('Y'); ?> by My Company.<br/>
 		All Rights Reserved.<br/>
-		<?php echo Yii::powered(); ?>
+		<?php //echo Yii::powered(); ?>
 	</div><!-- footer -->
 
 </div><!-- page -->
