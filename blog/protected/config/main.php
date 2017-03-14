@@ -57,6 +57,15 @@ return array(
 			'errorAction'=>YII_DEBUG ? null : 'site/error',
 		),
 
+		'urlManager'=>array(
+			'urlFormat'=>'path',
+			'rules'=>array(
+				'post/<id:\d+>/<title:.*?>'=>'post/view',
+				'posts/<tag:.*?>'=>'post/index',
+				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
+			),
+		),
+
 		'log'=>array(
 			'class'=>'CLogRouter',
 			'routes'=>array(
