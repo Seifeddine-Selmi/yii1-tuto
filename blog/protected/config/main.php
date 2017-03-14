@@ -9,6 +9,8 @@ return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'My Blog',
 
+	'theme'=>'classic',
+
 	// preloading 'log' component
 	'preload'=>array('log'),
 
@@ -17,6 +19,8 @@ return array(
 		'application.models.*',
 		'application.components.*',
 	),
+	// Change to use the post list page as the home page
+	'defaultController'=>'post',
 
 	'modules'=>array(
 		// uncomment the following to enable the Gii tool
@@ -48,15 +52,6 @@ return array(
 			),
 		),
 		*/
-
-		// database settings are configured in database.php
-		'db'=>require(dirname(__FILE__).'/database.php'),
-
-		'errorHandler'=>array(
-			// use 'site/error' action to display errors
-			'errorAction'=>YII_DEBUG ? null : 'site/error',
-		),
-
 		'urlManager'=>array(
 			'urlFormat'=>'path',
 			'rules'=>array(
@@ -64,6 +59,18 @@ return array(
 				'posts/<tag:.*?>'=>'post/index',
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
 			),
+		),
+        // Running in production mode
+		/*'cache'=>array(
+			'class'=>'CDbCache',
+		),*/
+
+		// database settings are configured in database.php
+		'db'=>require(dirname(__FILE__).'/database.php'),
+
+		'errorHandler'=>array(
+			// use 'site/error' action to display errors
+			'errorAction'=>YII_DEBUG ? null : 'site/error',
 		),
 
 		'log'=>array(

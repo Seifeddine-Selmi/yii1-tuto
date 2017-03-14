@@ -30,6 +30,20 @@
 			'maxComments'=>Yii::app()->params['recentCommentCount'],
 		)); ?>
 
+	<?php
+	// Improving Performance with Cache
+/*
+	   if($this->beginCache('tagCloud', array('duration'=>3600))) {
+
+			 $this->widget('TagCloud', array(
+				'maxTags'=>Yii::app()->params['tagCloudCount'],
+			));
+
+		 $this->endCache();
+	   }
+*/
+	?>
+
 	</div><!-- sidebar -->
 
 </div>
